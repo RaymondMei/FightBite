@@ -7,7 +7,7 @@ export default function App() {
       <Text>asdf</Text>
       <StatusBar style="auto" />
       <Button
-        title="Press me"
+        title="Press"
         onPress={() => Alert.alert('Simple Button pressed')}
       />
 
