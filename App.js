@@ -7,14 +7,11 @@ export default function App() {
     <View style={styles.container}>
 
       <Text style={{color: 'red', fontWeight: 'bold', fontSize: 50,}}>FightBite</Text>
-      <Image height source={require('./assets/FightBiteLogo.jpg')} style= {{width: 100, height: 100}}/>
+      <Image height source={require('./assets/logo.png')} style= {{width: 300, height: 300}}/>
       <StatusBar style="auto"/>
       <Button
         title="Start"
-        onPress={() => Alert.alert("FightBite Activated", "Continue to FightBite?", [
-          {text: "Yes", onPress: () => console.log("yes")},
-          {text: "No", onPress: () => console.log("no")}
-        ])}
+        onPress={() => console.log("yes")}
       />
 
     </View>
