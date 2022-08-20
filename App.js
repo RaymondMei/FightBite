@@ -7,6 +7,7 @@ import { StyleSheet, Text, SafeAreaView, View, Button, Alert, Image } from 'reac
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { useFonts } from "expo-font";
 
 
 import { LinearGradient } from "expo-linear-gradient";
