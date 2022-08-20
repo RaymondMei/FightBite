@@ -1,17 +1,20 @@
 import React from "react";
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, Button, Alert, Image } from 'react-native';
 
 export default function App() {
   return (
     <View style={styles.container}>
 
-      <Text>Start</Text>
       <Text>FightBite</Text>
+      <Image height source={require('./assets/FightBiteLogo.jpg')} style= {{width: 50, height: 50}}/>
       <StatusBar style="auto"/>
       <Button
         title="Start"
-        onPress={() => Alert.alert('Button was pressed')}
+        onPress={() => Alert.alert("FightBite Activated", "Continue to FightBite?", [
+          {text: "Yes", onPress: () => console.log("yes")},
+          {text: "No", onPress: () => console.log("no")}
+        ])}
       />
 
     </View>
