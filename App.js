@@ -1,16 +1,15 @@
+import React from "react";
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button, Alert } from 'react-native';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>asdf</Text>
-      <StatusBar style="auto" />
+      <Text>Start</Text>
       <Button
-        title="Press"
-        onPress={() => Alert.alert('Simple Button pressed')}
+        title="Click Me"
+        onPress={() => Alert.prompt("My title", "My message", text => console.log(text))}
       />
-
     </View>
   );
 }
