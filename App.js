@@ -5,11 +5,15 @@ import { StyleSheet, Text, View, Button, Alert } from 'react-native';
 export default function App() {
   return (
     <View style={styles.container}>
+
       <Text>Start</Text>
+      <Text>FightBite</Text>
+      <StatusBar style="auto" />
       <Button
-        title="Click Me"
-        onPress={() => Alert.prompt("My title", "My message", text => console.log(text))}
+        title="Start"
+        onPress={() => Alert.alert('Button was pressed')}
       />
+
     </View>
   );
 }
