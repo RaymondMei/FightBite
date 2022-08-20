@@ -26,7 +26,8 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+      screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="Start"
           component={StartScreen}
@@ -48,27 +49,21 @@ function StartScreen({ navigation }) {
 
       <LinearGradient
         // Background Linear Gradient
-        colors={['#696969', `#b0c4de`,'transparent']}
+        colors={['#FFB88C','#DE6262', `#FFB88C`,'transparent']}
         style={styles.background}
         
       />
 
-      <Text style={{ color: 'lightsalmon', fontSize: 70, fontFamily: 'Roboto',}}> FightBite</Text>
+      <Text style={{ color: 'black', fontSize: 70, fontFamily: 'Roboto',}}> FightBite</Text>
       <Image height source={require('./assets/logo.png')} style={{ width: 300, height: 300 }} />
       <StatusBar style="auto" />
-      <LinearGradient
-        // Button Linear Gradient
-        colors={['#4c669f', '#3b5998', '#192f6a']}
-        style={styles.button}>
-        <Button
-          title="Start"
-          onPress={() => {
-            navigation.navigate('GetPhoto');
-            console.log("start button clicked");
-          }}
-        />
-      </LinearGradient>
-
+      <Button
+        title="Start"
+        onPress={() => {
+          navigation.navigate('GetPhoto');
+          console.log("start button clicked");
+        }}
+      />
     </View>
   );
 }
@@ -89,10 +84,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   button: {
-    padding: 15,
-    alignItems: 'center',
-    borderRadius: 5,
-  },
+    height: '50%',
+    width: '50%',
+    },
   background: {
     position: 'absolute',
     left: 0,
