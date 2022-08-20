@@ -1,10 +1,14 @@
-import React from "react";
+import React from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, Alert, Image } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, View, Button, Alert, Image } from 'react-native';
 // import StartScreen from 'screens/StartScreen'
 // import GetPhotoScreen from 'screens/GetPhotoScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+
+
 
 const Stack = createNativeStackNavigator();
 import { useFonts } from "expo-font";
@@ -23,7 +27,8 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{ headerShown: false }}>
         <Stack.Screen
           name="Start"
           component={StartScreen}
@@ -40,7 +45,7 @@ export default function App() {
 
 function StartScreen({ navigation }) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
 
       <Text style={{ color: 'red', fontSize: 50, fontFamily: 'RaleWay', }}> FightBite</Text>
       <Image height source={require('./assets/logo.png')} style={{ width: 300, height: 300 }} />
@@ -53,16 +58,21 @@ function StartScreen({ navigation }) {
         }}
       />
 
-    </View>
+    </SafeAreaView>
   );
 }
 
 function GetPhotoScreen() {
-  return (<View>
-    <Text>
-      Test
-    </Text>
-  </View>);
+  const openCamera = () => {
+
+  }
+  return (
+    <SafeAreaView style={styles.body}>
+      <View style={styles.center}>
+        <Button title={"Open Camera"} onPress={() => { openCamera }} />
+      </View>
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -72,4 +82,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
   },
+  body: {
+    flex: 1,
+  },
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });
