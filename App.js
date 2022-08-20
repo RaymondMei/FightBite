@@ -1,14 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button, Alert } from 'react-native';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>asdf</Text>
+      <Text>FightBite</Text>
       <StatusBar style="auto" />
       <Button
-        title="Press"
-        onPress={() => Alert.alert('Simple Button pressed')}
+        title="Start"
+        onPress={() => Alert.alert('Button was pressed')}
       />
 
     </View>
