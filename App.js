@@ -9,9 +9,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
 
+import { LinearGradient } from "expo-linear-gradient";
 
 const Stack = createNativeStackNavigator();
-import { useFonts } from "expo-font";
 
 export default function App() {
 
@@ -19,6 +19,8 @@ export default function App() {
     Montserrat: require('./assets/fonts/Montserrat-VariableFont_wght.ttf'),
     NunitoSans: require('./assets/fonts/NunitoSans-Black.ttf'),
     RaleWay: require('./assets/fonts/Raleway-VariableFont_wght.ttf'),
+    RobotoSlab: require('./assets/fonts/RobotoSlab-VariableFont_wght.ttf'),
+    Roboto: require('./assets/fonts/Roboto-Black.ttf'),
   })
 
   if (!loaded) {
@@ -47,7 +49,14 @@ function StartScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
 
-      <Text style={{ color: 'red', fontSize: 50, fontFamily: 'RaleWay', }}> FightBite</Text>
+      <LinearGradient
+        // Background Linear Gradient
+        colors={['#FFB88C', '#DE6262', `#FFB88C`, 'transparent']}
+        style={styles.background}
+
+      />
+
+      <Text style={{ color: 'black', fontSize: 70, fontFamily: 'Roboto', }}> FightBite</Text>
       <Image height source={require('./assets/logo.png')} style={{ width: 300, height: 300 }} />
       <StatusBar style="auto" />
       <Button
@@ -89,5 +98,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
+  button: {
+    height: '50%',
+    width: '50%',
+  },
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height: 1000,
+  },
+
 });
