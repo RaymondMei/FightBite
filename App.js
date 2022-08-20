@@ -5,7 +5,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text>FightBite</Text>
-      <StatusBar style="auto" />
+      <StatusBar style="auto"/>
       <Button
         title="GO"
         onPress={() => Alert.alert('Button was pressed')}
