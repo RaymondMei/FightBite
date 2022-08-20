@@ -8,10 +8,10 @@ export default function App() {
 
       <Text>Start</Text>
       <Text>FightBite</Text>
-      <StatusBar style="auto" />
+      <StatusBar style="auto"/>
       <Button
-        title="Take Photo"
-        onPress={() => Alert.alert('This Button was pressed')}
+        title="Start"
+        onPress={() => Alert.alert('Button was pressed')}
       />
 
     </View>
