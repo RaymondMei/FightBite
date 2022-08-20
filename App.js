@@ -6,8 +6,8 @@ export default function App() {
   return (
     <View style={styles.container}>
 
-      <Text>FightBite</Text>
-      <Image height source={require('./assets/FightBiteLogo.jpg')} style= {{width: 50, height: 50}}/>
+      <Text style={{color: 'red', fontWeight: 'bold', fontSize: 50,}}>FightBite</Text>
+      <Image height source={require('./assets/FightBiteLogo.jpg')} style= {{width: 100, height: 100}}/>
       <StatusBar style="auto"/>
       <Button
         title="Start"
@@ -26,6 +26,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
   },
 });
