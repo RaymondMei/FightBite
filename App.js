@@ -10,7 +10,7 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import Toast from 'react-native-simple-toast';
+// import Toast from 'react-native-simple-toast';
 // import StartScreen from 'screens/StartScreen'
 // import GetPhotoScreen from 'screens/GetPhotoScreen';
 import { NavigationContainer } from '@react-navigation/native';
@@ -74,7 +74,7 @@ function StartScreen({ navigation }) {
       <Image height source={require('./assets/logo.png')} style={{ width: 400, height: 400 }} />
       <StatusBar style="auto" />
       <Button
-        title="Add Photo from Library"
+        title="Take Image"
         onPress={() => {
           navigation.navigate('GetPhoto');
           console.log("start button clicked");
@@ -133,7 +133,7 @@ function GetPhotoScreen() {
   if (photo) {
 
     let savePhoto = () => {
-      Toast.show("Saved", Toast.SHORT);
+      // Toast.show("Saved", Toast.SHORT);
       MediaLibrary.saveToLibraryAsync(photo.uri);
     };
 
