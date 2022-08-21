@@ -22,6 +22,8 @@ export default function App() {
     RaleWay: require('./assets/fonts/Raleway-VariableFont_wght.ttf'),
     RobotoSlab: require('./assets/fonts/RobotoSlab-VariableFont_wght.ttf'),
     Roboto: require('./assets/fonts/Roboto-Black.ttf'),
+    AlumniSansPinstripe: require('./assets/fonts/AlumniSansPinstripe-Regular.ttf'),
+    RobotoCondensedBold: require('./assets/fonts/RobotoCondensed-Bold.ttf')
   })
 
   if (!loaded) {
@@ -57,11 +59,11 @@ function StartScreen({ navigation }) {
 
       />
 
-      <Text style={{ color: 'black', fontSize: 70, fontFamily: 'Roboto', }}> FightBite</Text>
-      <Image height source={require('./assets/logo.png')} style={{ width: 300, height: 300 }} />
+      <Text style={{ color: 'black', fontSize: 70, fontFamily: 'RobotoCondensedBold',}}> FightBite</Text>
+      <Image height source={require('./assets/logo.png')} style={{ width: 400, height: 400 }} />
       <StatusBar style="auto" />
       <Button
-        title="Start"
+        title="Add Photo from Library"
         onPress={() => {
           navigation.navigate('GetPhoto');
           console.log("start button clicked");
