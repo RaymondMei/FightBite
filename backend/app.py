@@ -8,7 +8,7 @@ from torch import nn
 from torchvision import models
 classes = ["Bed Bug", "Flea", "Tick", "Mosquito"]
 model = models.densenet121(pretrained=True)
-state_dict = torch.load('/Users/evanwu/FightBite/backend/checkpoint.pth', map_location = torch.device("cpu"))
+state_dict = torch.load('checkpoint.pth', map_location = torch.device("cpu"))
 classifier = nn.Sequential(nn.Linear(1024, 512),
                            nn.ReLU(),
                            nn.Dropout(0.3),
