@@ -9,8 +9,10 @@ import {
   Button,
   Image,
   TouchableOpacity,
+  Linking,
+  Platform,
 } from 'react-native';
-// import Toast from 'react-native-simple-toast';
+import Toast from 'react-native-simple-toast';
 // import StartScreen from 'screens/StartScreen'
 // import GetPhotoScreen from 'screens/GetPhotoScreen';
 import { NavigationContainer } from '@react-navigation/native';
@@ -68,11 +70,10 @@ export default function App() {
 function StartScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
-
       <LinearGradient
         // Background Linear Gradient
         colors={['#FE6197', '#FFB463']}
-        style={styles.background}
+        style={[styles.background]}
       />
       <Text style={{ color: 'black', fontSize: 70, fontFamily: 'RobotoCondensedBold', }}> FightBite</Text>
       <Image height source={require('./assets/logo.png')} style={{
@@ -84,14 +85,15 @@ function StartScreen({ navigation }) {
       <StatusBar style="auto" />
       <LinearGradient
         colors={['#1b1c27', '#424454']}
-        start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[styles.button, { padding: 25 }]}>
+        start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[styles.button, { padding: 25, }]}>
         <TouchableOpacity onPress={() => {
           navigation.navigate('GetPhoto');
           console.log("start button clicked");
         }} >
-          <Text style={{ color: 'white', fontSize: 35, fontFamily: 'RobotoCondensedBold' }}> Identify Bite</Text>
+          <Text style={{ color: 'white', fontSize: 35, }}> Identify Bite</Text>
         </TouchableOpacity>
       </LinearGradient>
+      {/* <Text>Developed by Evan Wu, Eric Wang, Raymond Mei</Text> */}
     </SafeAreaView >
   );
 }
@@ -112,6 +114,7 @@ function GetPhotoScreen({ navigation }) {
   }, []);
 
   async function scanPhoto(photo) {
+    if (Platform.OS === 'android') Toast.show("Scanning...", Toast.SHORT);
     console.log(photo.uri);
     async function uploadImageAsync(uri) {
       let apiUrl = 'https://fitebite.herokuapp.com/predict';
@@ -173,12 +176,14 @@ function GetPhotoScreen({ navigation }) {
   if (photo) {
 
     let savePhoto = () => {
-      // Toast.show("Saved", Toast.SHORT);
+      if (Platform.OS === 'android') Toast.show("Saved", Toast.SHORT);
       MediaLibrary.saveToLibraryAsync(photo.uri);
     };
 
     return (
+
       <SafeAreaView style={styles.photosContainer}>
+
         <LinearGradient
           // Background Linear Gradient
           colors={['#FE6197', '#FFB463']}
@@ -189,7 +194,8 @@ function GetPhotoScreen({ navigation }) {
             top: 0, height: '130%', flex: 1, alignItems: 'center'
           }}
         >
-          <View style={{ position: 'absolute', top: '15%', height: 500, justifyContent: 'space-between' }}>
+          <Text style={{ color: 'black', position: 'absolute', top: '5%', fontSize: 70, fontFamily: 'RobotoCondensedBold', }}>Image</Text>
+          <View style={{ position: 'absolute', top: '18%', height: 500, justifyContent: 'space-between' }}>
 
             <View style={{ height: 365, justifyContent: 'space-between' }}>
               {photo && <Image style={styles.camera} source={{ uri: "data:image/png;base64," + photo.base64 }} />}
@@ -198,8 +204,9 @@ function GetPhotoScreen({ navigation }) {
                   colors={['#6448FE', '#5FC6FF']}
                   start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                   style={[styles.button, { height: 60 }]}>
-                  <TouchableOpacity onPress={async () => { await scanPhoto(photo); }}>
-                    <Text>Scan</Text>
+                  <TouchableOpacity onPress={async () => { await scanPhoto(photo); }}
+                    style={[styles.button, { width: '100%' }]}>
+                    <Text style={{ color: 'white', fontSize: 25 }}>SCAN</Text>
                   </TouchableOpacity>
                 </LinearGradient>
                 : undefined}
@@ -207,27 +214,27 @@ function GetPhotoScreen({ navigation }) {
             <View style={[styles.capturedPhotoButtons]}>
               {hasMediaLibraryPermission ?
                 <LinearGradient
-                  colors={['#FFFE6197', '#FFB463']}
+                  colors={['#2ec06f', '#a6f77b']}
                   start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                   style={[styles.button, { width: '45%', height: 60 }]}>
-                  <TouchableOpacity onPress={() => { savePhoto(photo); }}>
-                    <Text>Save</Text>
+                  <TouchableOpacity onPress={() => { savePhoto(photo); }} style={[styles.button, { width: '100%' }]}>
+                    <Text style={{ color: 'white', fontSize: 25 }}>Save</Text>
                   </TouchableOpacity>
                 </LinearGradient>
                 : undefined}
               <LinearGradient
-                colors={['#FF5DCD', '#FF8484']}
+                colors={['#eb3941', '#f15e64', '#e14e53', '#e2373f']}
                 start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                 style={[styles.button, { width: '45%', height: 60 }]}>
-                <TouchableOpacity onPress={() => setPhoto(undefined)}>
-                  <Text>Discard</Text>
+                <TouchableOpacity onPress={() => setPhoto(undefined)} style={[styles.button, { width: '100%' }]}>
+                  <Text style={{ color: 'white', fontSize: 25 }}>Discard</Text>
                 </TouchableOpacity>
               </LinearGradient>
             </View>
 
           </View>
         </LinearGradient>
-      </SafeAreaView>
+      </SafeAreaView >
     );
   }
 
@@ -242,32 +249,33 @@ function GetPhotoScreen({ navigation }) {
           right: 0,
           top: 0, height: '130%', flex: 1, alignItems: 'center',
         }}
-      >
-        <View style={{ alignItems: 'center', position: 'absolute', top: '10%', justifyContent: 'space-between', height: 380 }}>
+      ><Text style={{ position: 'absolute', top: '5%', color: 'black', fontSize: 50, fontFamily: 'RobotoCondensedBold', }}>Bite Image</Text>
+        <View style={{ alignItems: 'center', position: 'absolute', top: '20%', justifyContent: 'space-between', height: 380 }}>
           <Camera
             style={[styles.camera, { borderColor: 'black', borderWidth: 3 }]}
             ref={cameraRef}
             ratio="1:1">
             <StatusBar style="auto" />
+            <LinearGradient
+              colors={['#1b1c27', '#424454']}
+              start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+              style={[styles.button, { width: '25%', height: '16%', marginBottom: '2%' }]}>
+              <TouchableOpacity onPress={capturePic} style={[styles.button, { width: '100%' }]}>
+                <Text style={{ color: 'white', fontSize: 15 }}>Capture</Text>
+              </TouchableOpacity>
+            </LinearGradient>
           </Camera>
 
-          <LinearGradient
-            colors={['#1b1c27', '#424454']}
-            start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-            style={[styles.button, { width: 170 }]}>
-            <TouchableOpacity onPress={capturePic} style={styles.button}>
-              <Text style={{ color: 'white', fontSize: 25, fontFamily: 'RobotoCondensedBold' }}>Capture</Text>
-            </TouchableOpacity>
-          </LinearGradient>
+
         </View>
 
-        <View style={{ width: 300, position: 'absolute', bottom: '35%', alignItems: 'center', }}>
+        <View style={{ width: 300, position: 'absolute', bottom: '32%', alignItems: 'center', }}>
           <LinearGradient
             colors={['#1b1c27', '#424454']}
             start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
             style={[styles.button, { width: 300 }]}>
-            <TouchableOpacity onPress={pickImage} style={styles.button}>
-              <Text style={{ color: 'white', fontSize: 25, fontFamily: 'RobotoCondensedBold' }}>Pick from Gallery</Text>
+            <TouchableOpacity onPress={pickImage} style={[styles.button, { width: '100%' }]}>
+              <Text style={{ color: 'white', fontSize: 25 }}>Pick from Gallery</Text>
             </TouchableOpacity>
           </LinearGradient>
         </View >
@@ -279,7 +287,8 @@ function GetPhotoScreen({ navigation }) {
 function ResultsScreen({ route }) {
   const { results } = route.params;
   let data = JSON.parse(results);
-  console.log(data.class);
+  let bugInfo = getBugInfo(data.class);
+  console.log(bugInfo);
   return (
     <SafeAreaView style={styles.container}>
       <LinearGradient
@@ -292,13 +301,46 @@ function ResultsScreen({ route }) {
           top: 0, height: '130%', flex: 1, alignItems: 'center',
         }}
       >
+        <View style={{ position: 'absolute', left: 0, right: 0, top: 0, height: "77%", justifyContent: 'space-evenly', padding: 20 }}>
+          <Text style={{ color: 'black', fontSize: 70, fontFamily: 'RobotoCondensedBold', }}>
+            {bugInfo.name}
+          </Text>
+          <Text style={{ color: 'black', fontSize: 18, fontFamily: 'Roboto', }}>
+            {bugInfo.description}
+          </Text>
+          <Text style={{ color: 'black', fontSize: 18, fontFamily: 'Roboto', }}>
+            {bugInfo.treatment}
+          </Text>
+          <Text onPress={() => { Linking.openURL(bugInfo.link) }} style={{ color: 'black', fontSize: 18, fontFamily: 'Roboto', color: 'blue', textDecorationLine: 'underline' }}>
+            {bugInfo.link}
+          </Text>
 
-        <Text style={{ position: 'absolute', top: '30%', color: 'black', fontSize: 70, fontFamily: 'RobotoCondensedBold', }}>
-          {data.class}
-        </Text>
+        </View>
       </LinearGradient>
     </SafeAreaView>
   );
+}
+
+function getBugInfo(bug) {
+  let bugInfo = { "name": bug };
+  if (bug == "Bedbug") {
+    bugInfo['description'] = "Reddish brown, oval and flat, about the size of an apple seed. They hide in the crevices of beds, box springs, bed frames, and other objects near a bed. They come out at night to suck on human blood, which generally do not cause any disease, but may cause infections from scratching."
+    bugInfo['treatment'] = "Wash bites with soap and water. Apply corticosteroid cream to reduce itching."
+    bugInfo['link'] = "https://www.amazon.ca/Gold-Bond-Ultimate-Eczema-Milliliter/dp/B07KK4WYK9/ref=sr_1_2_sspa?crid=3LUCYWE6FZ3UP&keywords=corticosteroid+cream&qid=1661072164&sprefix=corticosteroid+cream%2Caps%2C60&sr=8-2-spons&psc=1";
+  } else if (bug == "Flea") {
+    bugInfo['description'] = "Small wingless, agile insects that occupy hosts such as pets and humans to suck their blood. These bites may transmit diseases such as cat scratch disease or parasites."
+    bugInfo['treatment'] = "Antihistamine or corticosteroid cream to reduce itching. Ice can reduce swelling and pain. Aloe vera contains salicylic acid, which reduces itching and pain."
+    bugInfo['link'] = "https://www.amazon.ca/Foodaholic-Aloe-Vera-Soothing-300ml/dp/B0868WLDXM/ref=sr_1_5?crid=3K3URV1K23HNA&keywords=aloe+vera+gel&qid=1661072692&sprefix=aloe+vera+gel%2Caps%2C64&sr=8-5";
+  } else if (bug == "Mosquito") {
+    bugInfo['description'] = "Thin, long-leged, two-winged insects that mainly inhabit hotter, more humid environments. They use a long appendage to suck blood, which may transmit diseases such as West Nile virus, yellow fever, and dengue fever virus."
+    bugInfo['treatment'] = "Wash area with soap and water. Apply ice packs to reduce swelling and itching. Use anti-itch or antihistamine cream to relieve itching."
+    bugInfo['link'] = "https://www.amazon.ca/After-Bite-Treatment-Protectant-0-7-Ounce/dp/B001UWOYUE/ref=sr_1_1_sspa?keywords=after+bite&qid=1661070612&sprefix=after%2Caps%2C65&sr=8-1-spons&psc=1";
+  } else if (bug == "Tick") {
+    bugInfo['description'] = "Small wingless insects that usually lurk in tall grass and plants. They attach to your skin and bite into it to suck blood, which may transmit diseases such as Lyme disease and Rocky Mountain spotted fever."
+    bugInfo['treatment'] = "In case of a tick bite, put ice or a cold pack with a thin cloth between the ice and your skin, on the bite for 15 to 20 minutes once an hour. Take an antihistamine medicine to help relieve itching, redness, and swelling. Use a spray of local anesthetic that contains benzocaine, such as Solarcaine. It may help relieve pain. If your skin reacts to the spray, stop using it. Put calamine lotion on the skin. It may help relieve itching."
+    bugInfo['link'] = "https://www.amazon.ca/Childrens-Benadryl-Relief-Irritations-Antihistamine/dp/B07KG26YB8/ref=sr_1_1?keywords=antihistamine+cream&qid=1661069758&sprefix=antihistamine+%2Caps%2C59&sr=8-1";
+  }
+  return bugInfo;
 }
 
 const styles = StyleSheet.create({
@@ -324,9 +366,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     color: 'white',
-  },
-  lingrad: {
-    flex: 1,
   },
   background: {
     position: 'absolute',
