@@ -10,7 +10,7 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import Toast from 'react-native-simple-toast';
+// import Toast from 'react-native-simple-toast';
 // import StartScreen from 'screens/StartScreen'
 // import GetPhotoScreen from 'screens/GetPhotoScreen';
 import { NavigationContainer } from '@react-navigation/native';
@@ -173,7 +173,7 @@ function GetPhotoScreen({ navigation }) {
   if (photo) {
 
     let savePhoto = () => {
-      Toast.show("Saved", Toast.SHORT);
+      // Toast.show("Saved", Toast.SHORT);
       MediaLibrary.saveToLibraryAsync(photo.uri);
     };
 
