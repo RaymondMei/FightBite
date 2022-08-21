@@ -1,16 +1,27 @@
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, SafeAreaView, View, Button, Alert, Image } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  SafeAreaView,
+  View,
+  Button,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
+import Toast from 'react-native-simple-toast';
 // import StartScreen from 'screens/StartScreen'
 // import GetPhotoScreen from 'screens/GetPhotoScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { useFonts } from "expo-font";
-
-
 import { LinearGradient } from "expo-linear-gradient";
+import { useFonts } from "expo-font";
+import { Camera } from 'expo-camera';
+import * as MediaLibrary from 'expo-media-library';
+import * as ImagePicker from 'expo-image-picker';
+
+
 
 const Stack = createNativeStackNavigator();
 
@@ -66,6 +77,7 @@ function StartScreen({ navigation }) {
           navigation.navigate('GetPhoto');
           console.log("start button clicked");
         }}
+        styles={styles.button}
       />
 
     </SafeAreaView>
@@ -73,14 +85,96 @@ function StartScreen({ navigation }) {
 }
 
 function GetPhotoScreen() {
-  const openCamera = () => {
+
+  let cameraRef = useRef();
+  const [hasCameraPermission, setHasCameraPermission] = useState();
+  const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState();
+  const [photo, setPhoto] = useState();
+  useEffect(() => {
+    (async () => {
+      const cameraPermission = await Camera.requestCameraPermissionsAsync();
+      const mediaLibraryPermission = await MediaLibrary.requestPermissionsAsync();
+      setHasCameraPermission(cameraPermission.status === "granted");
+      setHasMediaLibraryPermission(mediaLibraryPermission.status === "granted");
+    })();
+  }, []);
+
+  let scanPhoto = async () => {
 
   }
+
+  let capturePic = async () => {
+    let options = {
+      quality: 1,
+      base64: true,
+      exif: false
+    };
+    let newPhoto = await cameraRef.current.takePictureAsync(options);
+    setPhoto(newPhoto);
+  };
+
+  let pickImage = async () => {
+    let newPhoto = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+      base64: true,
+      exif: false,
+    });
+
+    if (!newPhoto.cancelled) {
+      setPhoto(newPhoto);
+    }
+  }
+
+  if (photo) {
+
+    let savePhoto = () => {
+      Toast.show("Saved", Toast.SHORT);
+      MediaLibrary.saveToLibraryAsync(photo.uri);
+    };
+
+    return (
+      <SafeAreaView style={styles.photosContainer}>
+        {photo && <Image style={styles.camera} source={{ uri: "data:image/jpg;base64," + photo.base64 }} />}
+        {/* {photo && <Image source={{ uri: photo }} />} */}
+
+        <View style={styles.capturedPhotoButtons}>
+          {hasMediaLibraryPermission ? <TouchableOpacity onPress={scanPhoto} style={styles.button}>
+            <Text>Scan</Text>
+          </TouchableOpacity> : undefined}
+          {hasMediaLibraryPermission ? <TouchableOpacity onPress={savePhoto} style={styles.button}>
+            <Text>Save</Text>
+          </TouchableOpacity> : undefined}
+          <TouchableOpacity onPress={() => setPhoto(undefined)} style={styles.button}>
+            <Text>Discard</Text>
+          </TouchableOpacity>
+        </View>
+
+      </SafeAreaView>
+    );
+  }
+
   return (
-    <SafeAreaView style={styles.body}>
-      <View style={styles.center}>
-        <Button title={"Open Camera"} onPress={() => { openCamera }} />
+    <SafeAreaView style={styles.photosContainer}>
+      <Camera
+        style={styles.camera}
+        ref={cameraRef}
+        ratio="1:1">
+        <StatusBar style="auto" />
+      </Camera>
+      <View>
+        <TouchableOpacity onPress={capturePic} style={styles.button}>
+          <Text>Capture</Text>
+        </TouchableOpacity>
       </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity onPress={pickImage} style={styles.button}>
+          <Text>Pick from Gallery</Text>
+        </TouchableOpacity>
+      </View>
+
     </SafeAreaView>
   );
 }
@@ -101,8 +195,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    height: '50%',
-    width: '50%',
+    minHeight: 40,
+    minWidth: 80,
+    backgroundColor: 'salmon',
+    borderRadius: 7,
+    justifyContent: 'center',
+    alignItems: 'center',
+
   },
   background: {
     position: 'absolute',
@@ -111,5 +210,24 @@ const styles = StyleSheet.create({
     top: 0,
     height: 1000,
   },
-
+  photosContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  camera: {
+    width: 300,
+    height: 300,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  },
+  buttonContainer: {
+    alignSelf: 'center',
+    justifyContent: 'flex-end',
+  },
+  capturedPhotoButtons: {
+    width: 300,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  }
 });
